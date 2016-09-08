@@ -1,0 +1,54 @@
+#!/bin/bash
+ROOT=$OPENSHIFT_DATA_DIR
+ESB_VERSION=4.7.0
+
+if [[ $OPENSHIFT_POSTGRESQL_DB_URL ]]
+then
+  PG_URL="$OPENSHIFT_POSTGRESQL_DB_HOST:$OPENSHIFT_POSTGRESQL_DB_PORT/$PGDATABASE"
+fi
+
+cd $ROOT
+
+wget --user-agent="Chrome/52.0.2743.116" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://dist.wso2.org/products/enterprise-service-bus/$ESB_VERSION/wso2esb-$ESB_VERSION.zip
+unzip esb-$ESB_VERSION.zip
+rm -Rf esb esb-$ESB_VERSION.zip
+mv esb-$ESB_VERSION esb
+
+cd esb/repository/conf
+#sed -i 's/
+#//' carbon.xml
+sed -i "s/^<!--HostName>.*$/<HostName>$OPENSHIFT_DIY_IP</HostName>/" carbon.xml
+sed -i "s/^<!--MgtHostName>.*$/<MgtHostName>OPENSHIFT_DIY_IP</MgtHostName>/" carbon.xml
+
+cd $OPENSHIFT_DATA_DIR
+cd esb/repository/conf/tomcat
+#sed -i 's/
+#//' catalina-server.xml
+sed -i "s/^<Connector URIEncoding="UTF-8".*$/<Connector URIEncoding="UTF-8" acceptCount="200" acceptorThreadCount="2" bindOnInit="false" compressableMimeType="text/html,text/javascript,application/x-javascript,application/javascript,application/xml,text/css,application/xslt+xml,text/xsl,image/gif,image/jpg,image/jpeg" compression="on" compressionMinSize="2048" connectionUploadTimeout="120000" disableUploadTimeout="false" maxHttpHeaderSize="8192" maxKeepAliveRequests="200" maxThreads="250" minSpareThreads="50" noCompressionUserAgents="gozilla, traviata" port="9763" protocol="org.apache.coyote.http11.Http11NioProtocol" redirectPort="$OPENSHIFT_DIY_PORT" server="WSO2 Carbon Server"/>/" catalina-server.xml
+sed -i "s/^<Connector SSLEnabled="true".*$/<Connector SSLEnabled="true" URIEncoding="UTF-8" acceptCount="200" acceptorThreadCount="2" bindOnInit="false" clientAuth="false" compressableMimeType="text/html,text/javascript,application/x-javascript,application/javascript,application/xml,text/css,application/xslt+xml,text/xsl,image/gif,image/jpg,image/jpeg" compression="on" compressionMinSize="2048" connectionUploadTimeout="120000" disableUploadTimeout="false" enableLookups="false" keystoreFile="${carbon.home}/repository/resources/security/wso2carbon.jks" keystorePass="password" maxHttpHeaderSize="8192" maxKeepAliveRequests="200" maxThreads="250" minSpareThreads="50" noCompressionUserAgents="gozilla, traviata" port="$OPENSHIFT_DIY_PORT" protocol="org.apache.coyote.http11.Http11NioProtocol" scheme="https" secure="true" server="WSO2 Carbon Server" sslEnabledProtocols="TLSv1,TLSv1.1,TLSv1.2" svns:secretAlias="Server.Service.Connector.keystorePass"/>/" catalina-server.xml
+
+
+if [[ $PG_URL ]]
+then
+  sed -i "s/^sonar.jdbc.username.*$/sonar.jdbc.username=$OPENSHIFT_POSTGRESQL_DB_USERNAME/" sonar.properties
+  sed -i "s/^sonar.jdbc.password.*$/sonar.jdbc.password=$OPENSHIFT_POSTGRESQL_DB_PASSWORD/" sonar.properties
+  sed -i 's/^sonar.jdbc.url/#sonar.jdbc.url/' sonar.properties
+  sed -i "s;^.*sonar.jdbc.url=jdbc:postgresql.*$;sonar.jdbc.url=jdbc:postgresql://$PG_URL;" sonar.properties
+fi
+
+cd $OPENSHIFT_DATA_DIR
+rm -rf logs
+ln -s $OPENSHIFT_LOG_DIR logs
+
+cd $OPENSHIFT_DATA_DIR/esb/repository
+rm -rf logs
+ln -s $OPENSHIFT_LOG_DIR logs
+
+cd $OPENSHIFT_DATA_DIR/tomcat
+rm -rf logs
+ln -s $OPENSHIFT_LOG_DIR logs
+
+echo -e "\nwrapper.backend.type=PIPE" >> ${OPENSHIFT_DATA_DIR}esb/conf/wrapper.conf
+
+
+

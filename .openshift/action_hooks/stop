@@ -1,0 +1,8 @@
+#!/bin/bash
+
+ROOT=$OPENSHIFT_DATA_DIR
+
+cd $ROOT/esb/bin
+./wso2server.sh stop
+
+
