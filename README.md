@@ -1,10 +1,9 @@
 WSO2 ESB on OpenShift
 =========================
 
-``SonarQube`` is a popular code profiler and dashboard that excels when used along
-a Continuous Integration engine.
+``WSO2 ESB``, the backbone of WSO2's integration platform, used by hundreds of customers to integrate across disparate systems.
 
-More information can be found at http://www.sonarqube.org
+More information can be found at http://wso2.com/products/enterprise-service-bus/
 
 Running on OpenShift
 --------------------
@@ -13,12 +12,12 @@ Create an account at http://openshift.redhat.com/
 
 Create a DIY application. If you may add a PostgreSQL cartridge.
 
-    rhc app create sonar diy-0.1 postgresql-9.2
+    rhc app create esb diy-0.1 postgresql-9.2
 
-Add this upstream SonarQube quickstart repo
+Add this upstream ESB quickstart repo
 
     git rm -r diy .openshift misc README.md
-    git remote add upstream -m master https://github.com/worldline/openshift-sonarqube.git
+    git remote add upstream -m master https://github.com/myasas/openshift-esb.git
     git pull -s recursive -X theirs upstream master
 
 Push the repo upstream to OpenShift
@@ -27,7 +26,7 @@ Push the repo upstream to OpenShift
 
 Head to your application at:
 
-    http://sonar-$yourdomain.rhcloud.com
+    http://esb-$yourdomain.rhcloud.com
 
 Default Credentials
 -------------------
@@ -36,9 +35,9 @@ Default Credentials
 <tr><td>Default Admin Password</td><td>admin</td></tr>
 </table>
 
-To give your new SonarQube site a web address of its own, add your desired alias:
+To give your new ESB site a web address of its own, add your desired alias:
 
-    rhc app add-alias -a sonar --alias "$whatever.$mydomain.com"
+    rhc app add-alias -a esb --alias "$whatever.$mydomain.com"
 
 Then add a cname entry in your domain's dns configuration pointing your alias to $whatever-$yourdomain.rhcloud.com.
 
