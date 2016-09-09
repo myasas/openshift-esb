@@ -9,7 +9,7 @@ fi
 
 cd $ROOT
 
-wget --user-agent="Chrome/52.0.2743.116" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://dist.wso2.org/products/enterprise-service-bus/$ESB_VERSION/wso2esb-$ESB_VERSION.zip
+wget --user-agent="test" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://dist.wso2.org/products/enterprise-service-bus/$ESB_VERSION/wso2esb-$ESB_VERSION.zip
 unzip esb-$ESB_VERSION.zip
 rm -Rf esb esb-$ESB_VERSION.zip
 mv esb-$ESB_VERSION esb
