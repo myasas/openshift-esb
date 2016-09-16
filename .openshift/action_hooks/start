@@ -2,6 +2,9 @@
 
 ROOT=$OPENSHIFT_DATA_DIR
 
+export JAVA_HOME=/var/lib/openshift/57d2276b2d5271f4d40000e0/app-root/data/java/jdk1.8.0_45/	
+export JRE_HOME=/var/lib/openshift/57d2276b2d5271f4d40000e0/app-root/data/java/jdk1.8.0_45/jre 	
+export PATH=$PATH:/var/lib/openshift/57d2276b2d5271f4d40000e0/app-root/data/java/jdk1.8.0_45/bin:/var/lib/openshift/57d2276b2d5271f4d40000e0/app-root/data/java/jdk1.8.0_45/jre/bin
 
 
 cd $ROOT/esb/bin
