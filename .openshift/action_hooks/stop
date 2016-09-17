@@ -1,8 +1,9 @@
 #!/bin/bash
 
+echo Started job Yasas stop.sh
 ROOT=$OPENSHIFT_DATA_DIR
 
-echo Started job Yasas stop.sh
-
+cd $ROOT/esb/bin
+./wso2server.sh stop
 
 echo Finished job Yasas stop.sh

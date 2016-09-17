@@ -8,34 +8,7 @@ echo java location =  ${OPENSHIFT_DATA_DIR/java}
 echo OPENSHIFT_DIY_IP = $OPENSHIFT_DIY_IP
 echo OPENSHIFT_DIY_PORT = $OPENSHIFT_DIY_PORT
 
-echo Installing WSO2 ESB
 
-cd $ROOT
-wget --user-agent="test" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://dist.wso2.org/products/enterprise-service-bus/$ESB_VERSION/wso2esb-$ESB_VERSION.zip
-unzip wso2esb-$ESB_VERSION.zip
-rm -Rf wso2esb wso2esb-$ESB_VERSION.zip
-mv wso2esb-$ESB_VERSION esb
-
-echo Installing JAVA
-
-cd $ROOT
-mkdir java
-cd $ROOT/java
-wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jdk-8u45-linux-x64.tar.gz"
-tar -zxvf jdk-8u45-linux-x64.tar.gz
-rm -Rf javazip jdk-8u45-linux-x64.tar.gz
-
-echo Setting environment variables : JAVA_HOME
-
-cd $OPENSHIFT_DATA_DIR
-cd ../../.env/user_vars
-touch JAVA_HOME
-echo ${OPENSHIFT_DATA_DIR}java/jdk1.8.0_45/ > JAVA_HOME
-
-echo Setting environment variables : PATH
-
-touch PATH
-echo ${OPENSHIFT_DATA_DIR}java/jdk1.8.0_45/bin:${PATH} > PATH
 
 echo -e "\nwrapper.backend.type=PIPE" >> ${OPENSHIFT_DATA_DIR}esb/conf/wrapper.conf
 

@@ -4,6 +4,9 @@ echo Started job Yasas start.sh
 
 ROOT=$OPENSHIFT_DATA_DIR
 
+cd $ROOT/esb/bin
+./wso2server.sh
+
 
 
 echo Finished job Yasas start.sh
