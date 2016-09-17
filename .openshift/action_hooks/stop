@@ -2,7 +2,7 @@
 
 ROOT=$OPENSHIFT_DATA_DIR
 
-cd $ROOT/esb/bin
-./wso2server.sh stop
+echo Started job Yasas stop.sh
 
 
+echo Finished job Yasas stop.sh
